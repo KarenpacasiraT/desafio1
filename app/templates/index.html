@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Acciones</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 60%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        button[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            display: none;
+        }
+        #results {
+            margin-top: 20px;
+        }
+        #results ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #results ul li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        #results ul li:nth-child(odd) {
+            background-color: #e9e9e9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Consulta de Acciones</h1>
+        <form id="stockForm" method="post">
+            <label for="symbols">Acciones (separadas por comas):</label>
+            <br>
+            <input type="text" id="symbols" name="symbols" required>
+            <br>
+            <button type="submit">Consultar</button>
+            <br>
+            <span id="symbolsError" class="error">Ingresa al menos un símbolo de acción.</span>
+        </form>
+        <div id="results">
+            {% if stock_data %}
+                <h2>Resultados:</h2>
+                <ul>
+                {% for symbol, price in stock_data.items() %}
+                    <li>{{ symbol }}: {{ price }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('stockForm').addEventListener('submit', function(event) {
+            var symbolsInput = document.getElementById('symbols');
+            var symbolsError = document.getElementById('symbolsError');
+
+            if (!symbolsInput.value.trim()) {
+                symbolsError.style.display = 'block';
+                event.preventDefault(); // Evitar el envío del formulario si hay errores
+            } else {
+                symbolsError.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
